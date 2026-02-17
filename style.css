@@ -1,0 +1,33 @@
+#calendar{
+    max-width: 800px;
+    margin: 20px auto;
+    width: 95%;
+}
+
+
+#weekdays {
+display: grid;
+gap: 14px; 
+grid-template-columns: repeat(7, 1fr);
+
+}
+
+#date-container {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: repeat(7, 1fr); 
+    grid-template-rows: repeat(5, 1fr); /* forces the injected javascript divs into exactly 5 rows */
+
+}
+
+#date-container [role="gridcell"]{
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    min-height: 80px; 
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+

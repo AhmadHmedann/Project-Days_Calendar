@@ -1,9 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <script type="module" src="common.mjs"></script>
         <script type="module" src="web.mjs"></script>
+        <link rel="stylesheet" href="style.css"/>
+        <title>Project Days Calender</title>
     </head>
     <body>
+      <h1 id="calender-title">Project-Days Calender</h1>
+
+      <section id="controls" class="controls" aria-label="calendar controls">
+        <label for="select-month">Select Month:</label>
+        <select id="select-month" name="select-month" aria-label="Select Month"></select>
+
+        <label for="select-year">Select Year:</label>
+        <select id="select-year" name="select-year" aria-label="Select Year"></select>
+      </section>
+
+      <main role="main" aria-labelledby="calendar-title">
+        <div class="calendar" id="calendar" role="grid" aria-label="Monthly calendar">
+            <div role="rowgroup">
+                <div class="weekdays" id="weekdays" role="row">
+                    <div role="columnheader">Sun</div>
+                    <div role="columnheader">Mon</div>
+                    <div role="columnheader">Tue</div>
+                    <div role="columnheader">Wed</div>
+                    <div role="columnheader">Thu</div>
+                    <div role="columnheader">Fri</div>
+                    <div role="columnheader">Sat</div>                                                                           
+                </div>
+            </div>
+          
+
+            <div id="date-container" class="date" role="rowgroup">
+
+            </div>
+        </div>
+      </main>
+
+
     </body>
 </html>
