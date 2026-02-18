@@ -9,18 +9,50 @@ console.log(state.currentDate);
 
 window.onload = function () {
   displayCalendar(state.currentDate);
-  nextMonthHandler(); //test
-  nextMonthHandler(); //test
-  previousMonthHandler(); //test
 };
 
 function displayCalendar(currentDate) {
-  const monthDays = numberOfDaysInMonth(currentDate);
-  const firstDayOfWeekOrder = dayOfWeekOrder(currentDate);
-  console.log(monthDays); //test
-  console.log(firstDayOfWeekOrder); //test
   // document.getElementById("next-month").addEventListener("click", nextMonthHandler);
   // document.getElementById("previous-month").addEventListener("click", previousMonthHandler);
+  renderCalendarGrid(currentDate);
+}
+
+function renderCalendarGrid(currentDate) {
+  const monthDays = numberOfDaysInMonth(currentDate);
+  const firstWeekday = dayOfWeekOrder(currentDate);
+  const totalDays = monthDays + firstWeekday;
+  const rows = Math.ceil(totalDays / 7);
+
+  let remainingDays = firstWeekday;
+  let dayCounter = 1;
+  const root = document.getElementById("date-container");
+  root.textContent = "";
+  for (let r = 0; r < rows; r++) {
+    const row = document.createElement("div");
+    row.setAttribute("role", "row");
+    row.className = "week-row";
+
+    for (let c = 0; c < 7; c++) {
+      const cell = document.createElement("div");
+      cell.setAttribute("role", "gridcell");
+      cell.className = "day-cell";
+
+      if (remainingDays > 0) {
+        cell.textContent = "";
+        cell.classList.add("empty-day");
+        remainingDays--;
+      } else if (dayCounter > monthDays) {
+        cell.textContent = " ";
+        cell.classList.add("empty-day");
+      } else {
+        cell.textContent = dayCounter;
+        cell.dataset.date = `${currentDate.year}/${currentDate.month}/${dayCounter}`;
+        dayCounter++;
+      }
+      row.append(cell);
+    }
+    root.append(row);
+  }
 }
 
 function numberOfDaysInMonth({ year, month }) {
