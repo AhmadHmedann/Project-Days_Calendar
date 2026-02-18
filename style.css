@@ -1,0 +1,35 @@
+#calendar {
+  max-width: 800px;
+  margin: 20px auto;
+  width: 95%;
+}
+
+#weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+}
+
+/* important to understand this in JS i create .week-row*/
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 6px; 
+}
+
+
+.day-cell {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-height: 80px;
+  padding: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.day-cell.empty-day {
+  background: transparent;
+  border: 1px solid transparent; /* keeps spacing but looks empty */
+}
