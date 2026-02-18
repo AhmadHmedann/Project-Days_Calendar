@@ -9,6 +9,8 @@ console.log(state.currentDate);
 
 window.onload = function () {
   displayCalendar(state.currentDate);
+  nextMonthHandler();
+  nextMonthHandler();
 };
 
 function displayCalendar(currentDate) {
