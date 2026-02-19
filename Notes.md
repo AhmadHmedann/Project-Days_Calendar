@@ -8,3 +8,4 @@
 7. The test                                                                                         later
 8. 100% accissibilty
           for the reset after we dispaly the calender.
+cell.dataset.date = `${currentDate.year}-${String(currentDate.month).padStart(2,"0")}-${String(dayCounter).padStart(2,"0")}`;

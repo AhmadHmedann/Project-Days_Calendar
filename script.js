@@ -8,22 +8,24 @@ state.currentDate.month = dateObject.getUTCMonth() + 1;
 console.log(state.currentDate);
 
 window.onload = function () {
-  displayCalendar(state.currentDate);
-  nextMonthHandler();
-  nextMonthHandler();
-};
-
-function displayCalendar(currentDate) {
-  renderCalendarGrid(currentDate);
   document
     .getElementById("next-month")
     .addEventListener("click", nextMonthHandler);
   document
     .getElementById("previous-month")
     .addEventListener("click", previousMonthHandler);
+  displayCalendar(state.currentDate);
+  
+};
+
+function displayCalendar(currentDate) {
+  renderCalendarGrid(currentDate);
+  
 }
 
 function renderCalendarGrid(currentDate) {
+  document.getElementById("month-label").textContent = `${monthName(currentDate.month)}  ${currentDate.year}`;
+ 
   const monthDays = numberOfDaysInMonth(currentDate);
   const firstWeekday = dayOfWeekOrder(currentDate);
   const totalDays = monthDays + firstWeekday;
@@ -48,7 +50,7 @@ function renderCalendarGrid(currentDate) {
         cell.classList.add("empty-day");
         remainingDays--;
       } else if (dayCounter > monthDays) {
-        cell.textContent = " ";
+        cell.textContent = "";
         cell.classList.add("empty-day");
       } else {
         cell.textContent = dayCounter;
@@ -93,4 +95,10 @@ function previousMonthHandler() {
     state.currentDate.month--;
   }
   displayCalendar(state.currentDate);
+}
+
+function monthName(monthNumber)
+{
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  return month[monthNumber-1];
 }
