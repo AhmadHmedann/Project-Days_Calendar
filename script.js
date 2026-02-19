@@ -14,7 +14,6 @@ window.onload = function () {
   document
     .getElementById("previous-month")
     .addEventListener("click", previousMonthHandler);
-  displayCalendar(state.currentDate);
 
   document
     .getElementById("select-month")
@@ -25,6 +24,7 @@ window.onload = function () {
 
   populateMonthSelect();
   populateYearSelect();
+  displayCalendar(state.currentDate);
 };
 
 function displayCalendar(currentDate) {
@@ -32,14 +32,17 @@ function displayCalendar(currentDate) {
 }
 
 function renderCalendarGrid(currentDate) {
-  const selectMonthElm = document.getElementById("select-month");
-  selectMonthElm.innerHTML = `<option value="">${monthName(state.currentDate.month)}</option>`;
+  // const selectMonthElm = document.getElementById("select-month");
+  // selectMonthElm.innerHTML = `<option value="">${monthName(state.currentDate.month)}</option>`;
 
-  const selectYearElm = document.getElementById("select-year");
-  selectYearElm.innerHTML = `<option value="">${state.currentDate.year}</option>`;
+  // const selectYearElm = document.getElementById("select-year");
+  // selectYearElm.innerHTML = `<option value="">${state.currentDate.year}</option>`;
 
   document.getElementById("month-label").textContent =
     `${monthName(currentDate.month)}  ${currentDate.year}`;
+
+  document.getElementById("select-month").value = String(currentDate.month);
+  document.getElementById("select-year").value = String(currentDate.year);
 
   const monthDays = numberOfDaysInMonth(currentDate);
   const firstWeekday = dayOfWeekOrder(currentDate);
@@ -113,7 +116,7 @@ function previousMonthHandler() {
 }
 
 function monthName(monthNumber) {
-  const month = [
+  const months = [
     "January",
     "February",
     "March",
@@ -132,14 +135,15 @@ function monthName(monthNumber) {
 
 function populateMonthSelect() {
   const selectElm = document.getElementById("select-month");
+  selectElm.textContent = "";
 
-  for (let i = 1; i <= 12; i++) {
+  for (let m = 1; m <= 12; m++) {
     const option = document.createElement("option");
-    option.textContent = monthName(i);
-    option.value = i;
-
+    option.textContent = monthName(m);
+    option.value = String(m);
     selectElm.append(option);
   }
+  selectElm.value = String(state.currentDate.month);
 }
 
 function selectMonthHandler(event) {
@@ -149,24 +153,21 @@ function selectMonthHandler(event) {
 }
 function populateYearSelect() {
   const selectElm = document.getElementById("select-year");
-
-  for (let i = 5; i >= 0; i--) {
+  selectElm.textContent = "";
+  const currentYear = state.currentDate.year;
+  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
     const option = document.createElement("option");
-    option.textContent = `${state.currentDate.year - i}`;
-    option.value = state.currentDate.year - i;
+    option.textContent = `${y}`;
+    option.value = String(y);
     selectElm.append(option);
   }
-  for (let i = 1; i < 5; i++) {
-    const option = document.createElement("option");
-    option.textContent = `${state.currentDate.year + i}`;
-    option.value = state.currentDate.year + i;
-    selectElm.append(option);
-  }
+  selectElm.value = String(state.currentDate.year);
 }
 
 function selectYearHandler(event) {
   const selectedYear = Number(event.target.value);
   state.currentDate.year = selectedYear;
-  displayCalendar(state.currentDate);
+
   populateYearSelect();
+  displayCalendar(state.currentDate);
 }
