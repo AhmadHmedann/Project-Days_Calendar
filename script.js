@@ -1,10 +1,11 @@
+const dateObject = new Date();
 const state = {
-  currentDate: {},
+  currentDate: {
+    year: dateObject.getUTCFullYear(),
+    month: dateObject.getUTCMonth() + 1,
+  },
 };
 
-const dateObject = new Date();
-state.currentDate.year = dateObject.getUTCFullYear();
-state.currentDate.month = dateObject.getUTCMonth() + 1;
 console.log(state.currentDate);
 
 window.onload = function () {
@@ -32,7 +33,6 @@ function displayCalendar(currentDate) {
 }
 
 function renderCalendarGrid(currentDate) {
-
   document.getElementById("month-label").textContent =
     `${monthName(currentDate.month)}  ${currentDate.year}`;
 
