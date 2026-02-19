@@ -32,11 +32,6 @@ function displayCalendar(currentDate) {
 }
 
 function renderCalendarGrid(currentDate) {
-  // const selectMonthElm = document.getElementById("select-month");
-  // selectMonthElm.innerHTML = `<option value="">${monthName(state.currentDate.month)}</option>`;
-
-  // const selectYearElm = document.getElementById("select-year");
-  // selectYearElm.innerHTML = `<option value="">${state.currentDate.year}</option>`;
 
   document.getElementById("month-label").textContent =
     `${monthName(currentDate.month)}  ${currentDate.year}`;
@@ -130,7 +125,7 @@ function monthName(monthNumber) {
     "November",
     "December",
   ];
-  return month[monthNumber - 1];
+  return months[monthNumber - 1];
 }
 
 function populateMonthSelect() {
@@ -143,7 +138,6 @@ function populateMonthSelect() {
     option.value = String(m);
     selectElm.append(option);
   }
-  selectElm.value = String(state.currentDate.month);
 }
 
 function selectMonthHandler(event) {
@@ -161,7 +155,6 @@ function populateYearSelect() {
     option.value = String(y);
     selectElm.append(option);
   }
-  selectElm.value = String(state.currentDate.year);
 }
 
 function selectYearHandler(event) {
