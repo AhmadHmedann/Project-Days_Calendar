@@ -11,6 +11,15 @@ export const state = {
   }
 };
 
+//data helper
+export function monthName(monthNumber){
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  return months[monthNumber - 1]
+}
+
 // 2. Math Functions (Exported so the Bridge and Tests can see them)
 export function numberOfDaysInMonth({ year, month }) {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();
