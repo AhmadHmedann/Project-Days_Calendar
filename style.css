@@ -15,9 +15,8 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
-  margin-top: 6px; 
+  margin-top: 6px;
 }
-
 
 .day-cell {
   border: 1px solid #ddd;
@@ -32,4 +31,45 @@
 .day-cell.empty-day {
   background: transparent;
   border: 1px solid transparent; /* keeps spacing but looks empty */
+}
+
+#Month-states {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto 0;
+}
+
+#month-label {
+  margin: 0;
+  text-align: center;
+}
+#previous-month,
+#next-month {
+  position: fixed;
+  bottom: 10px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+
+/* Place them side by side */
+#previous-month {
+  right: 140px;
+}
+
+#next-month {
+  right: 20px;
+}
+#controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 12px auto;
 }
