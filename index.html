@@ -22,7 +22,7 @@
 
       <main  aria-labelledby="calendar-title">
         <div class="calendar" id="calendar" role="grid" aria-label="Monthly calendar">
-            <h2 id="month-label">MonthName(after) 2026</h2>
+            
             <div role="rowgroup">
                 <div class="weekdays" id="weekdays" role="row">
                     <div role="columnheader">Sun</div>
@@ -35,11 +35,13 @@
                 </div>
             </div>
           
-
-            <div id="date-container" class="date" role="rowgroup">
+             <div id="date-container" class="date" role="rowgroup">
             <!-- our days will be injected here keeping it empty make sure that js will refresh the calender everytime a user picks different month -->
             </div>
         </div>
+         <button type="button" id="previous-month">Previous month</button>  
+          <button type="button" id="next-month">Next month</button>
+           
       </main>
 
 

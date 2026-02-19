@@ -14,9 +14,13 @@ window.onload = function () {
 };
 
 function displayCalendar(currentDate) {
-  // document.getElementById("next-month").addEventListener("click", nextMonthHandler);
-  // document.getElementById("previous-month").addEventListener("click", previousMonthHandler);
   renderCalendarGrid(currentDate);
+  document
+    .getElementById("next-month")
+    .addEventListener("click", nextMonthHandler);
+  document
+    .getElementById("previous-month")
+    .addEventListener("click", previousMonthHandler);
 }
 
 function renderCalendarGrid(currentDate) {
