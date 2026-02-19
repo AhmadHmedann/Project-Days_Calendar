@@ -15,6 +15,11 @@ window.onload = function () {
     .getElementById("previous-month")
     .addEventListener("click", previousMonthHandler);
   displayCalendar(state.currentDate);
+
+  document
+    .getElementById("select-month")
+    .addEventListener("change", selectMonthHandler);
+  populateMonthSelect();
 };
 
 function displayCalendar(currentDate) {
@@ -22,6 +27,9 @@ function displayCalendar(currentDate) {
 }
 
 function renderCalendarGrid(currentDate) {
+  const selectElm = document.getElementById("select-month");
+  selectElm.innerHTML = `<option value="">${monthName(state.currentDate.month)}</option>`;
+
   document.getElementById("month-label").textContent =
     `${monthName(currentDate.month)}  ${currentDate.year}`;
 
@@ -112,4 +120,22 @@ function monthName(monthNumber) {
     "December",
   ];
   return month[monthNumber - 1];
+}
+
+function populateMonthSelect() {
+  const selectElm = document.getElementById("select-month");
+
+  for (let i = 1; i <= 12; i++) {
+    const option = document.createElement("option");
+    option.textContent = monthName(i);
+    option.value = i;
+
+    selectElm.append(option);
+  }
+}
+
+function selectMonthHandler(event) {
+  const selectedMonth = Number(event.target.value);
+  state.currentDate.month = selectedMonth;
+  displayCalendar(state.currentDate);
 }
