@@ -6,63 +6,62 @@
 import * as Engine from "./common.mjs";
 
 // This waits for the browser to be ready before drawing anything.
-window.onload = function () {
-  displayCalendar(Engine.state.currentDate);
-/*
-  //buttons
-  const nextBtn = document.getElementById("next-month");
-  const prevBtn = document.getElementById("previous-month");
-  
-  if(nextBtn) {
-    nextBtn.onclick = () => {
-        Engine.incrementMonth();//calling the increment month function and attaching it to button.
-        displayCalendar(Engine.state.currentDate);
-    };
-    }
+const dateObject = new Date();
+const state = {
+  currentDate: {
+    year: dateObject.getUTCFullYear(),
+    month: dateObject.getUTCMonth() + 1,
+  },
+};
 
-    if(prevBtn) {
-        prevBtn.onclick = () => {
-            Engine.decrementMonth();
-            displayCalendar(Engine.state.currentDate);
-        };
-    }
-*/
- };
-/* --- 2. THE BRIDGE --- */
-// This coordinates between the math and the physical grid.
+console.log(state.currentDate);
+
+window.onload = function () {
+  document
+    .getElementById("next-month")
+    .addEventListener("click", nextMonthHandler);
+  document
+    .getElementById("previous-month")
+    .addEventListener("click", previousMonthHandler);
+
+  document
+    .getElementById("select-month")
+    .addEventListener("change", selectMonthHandler);
+  document
+    .getElementById("select-year")
+    .addEventListener("change", selectYearHandler);
+
+  populateMonthSelect();
+  populateYearSelect();
+  displayCalendar(state.currentDate);
+};
+
 function displayCalendar(currentDate) {
   renderCalendarGrid(currentDate);
 }
 
-/* --- 3. THE CONSTRUCTION CREW --- */
-// This is the heavy lifter that creates HTML elements.
-
 function renderCalendarGrid(currentDate) {
-  // Note: These math variables come from Engine/common.mjs
-  const monthDays = Engine.numberOfDaysInMonth(currentDate);//tries to find out how many days are in a specific month
-  const firstWeekday = Engine.dayOfWeekOrder(currentDate);// tries to find out what day of the week does the first fall on.
+  document.getElementById("month-label").textContent =
+    `${monthName(currentDate.month)}  ${currentDate.year}`;
 
-  const rows = Math.ceil((monthDays + firstWeekday) / 7);
+  document.getElementById("select-month").value = String(currentDate.month);
+  document.getElementById("select-year").value = String(currentDate.year);
+
+  const monthDays = numberOfDaysInMonth(currentDate);
+  const firstWeekday = dayOfWeekOrder(currentDate);
+  const totalDays = monthDays + firstWeekday;
+  const rows = Math.ceil(totalDays / 7);
 
   let remainingDays = firstWeekday;
   let dayCounter = 1;
-
-  //this the hok to our hTML divs
   const root = document.getElementById("date-container");
-  if (!root) return;//cheks if we have date container before running the code and returns quick if we dont have one.
-  root.textContent= "";//allows you to start on a clean slate everytime a new month is drawn.
-
-
-
-  // THE LOOPING LOGIC
+  root.textContent = "";
   for (let r = 0; r < rows; r++) {
-    // CREATING ROWS
     const row = document.createElement("div");
     row.setAttribute("role", "row");
     row.className = "week-row";
 
     for (let c = 0; c < 7; c++) {
-      // CREATING INDIVIDUAL BOXES
       const cell = document.createElement("div");
       cell.setAttribute("role", "gridcell");
       cell.className = "day-cell";
@@ -72,16 +71,104 @@ function renderCalendarGrid(currentDate) {
         cell.classList.add("empty-day");
         remainingDays--;
       } else if (dayCounter > monthDays) {
-        cell.textContent = " ";
+        cell.textContent = "";
         cell.classList.add("empty-day");
       } else {
         cell.textContent = dayCounter;
-        // ATTACHING DATA TO HTML
-        cell.dataset.date = `${currentDate.year}-${currentDate.month}-${dayCounter}`;
+        cell.dataset.date = `${currentDate.year}/${currentDate.month}/${dayCounter}`;
         dayCounter++;
       }
       row.append(cell);
     }
     root.append(row);
   }
+}
+
+function numberOfDaysInMonth({ year, month }) {
+  //   return new Date(year, month, 0).getDate();  here I will take my system timezone
+  //day 0 does not exist, so JS go back one day which the last day of previous month
+
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+function dayOfWeekOrder({ year, month }) {
+  //in JS Jan=0,,,,,,Des=11;
+
+  return new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); //Which day of the week is this date?
+  // that will return numbers from 0 to 6
+  //Sun:0 , Mon:1 ,,,,,,,,,Sat:6
+}
+
+function nextMonthHandler() {
+  if (state.currentDate.month === 12) {
+    state.currentDate.month = 1;
+    state.currentDate.year++;
+  } else {
+    state.currentDate.month++;
+  }
+  displayCalendar(state.currentDate);
+}
+
+function previousMonthHandler() {
+  if (state.currentDate.month === 1) {
+    state.currentDate.month = 12;
+    state.currentDate.year--;
+  } else {
+    state.currentDate.month--;
+  }
+  displayCalendar(state.currentDate);
+}
+
+function monthName(monthNumber) {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return months[monthNumber - 1];
+}
+
+function populateMonthSelect() {
+  const selectElm = document.getElementById("select-month");
+  selectElm.textContent = "";
+
+  for (let m = 1; m <= 12; m++) {
+    const option = document.createElement("option");
+    option.textContent = monthName(m);
+    option.value = String(m);
+    selectElm.append(option);
+  }
+}
+
+function selectMonthHandler(event) {
+  const selectedMonth = Number(event.target.value);
+  state.currentDate.month = selectedMonth;
+  displayCalendar(state.currentDate);
+}
+function populateYearSelect() {
+  const selectElm = document.getElementById("select-year");
+  selectElm.textContent = "";
+  const currentYear = state.currentDate.year;
+  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+    const option = document.createElement("option");
+    option.textContent = `${y}`;
+    option.value = String(y);
+    selectElm.append(option);
+  }
+}
+
+function selectYearHandler(event) {
+  const selectedYear = Number(event.target.value);
+  state.currentDate.year = selectedYear;
+
+  populateYearSelect();
+  displayCalendar(state.currentDate);
 }
