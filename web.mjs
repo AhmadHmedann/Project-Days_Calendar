@@ -113,7 +113,6 @@ function selectMonthHandler(event){
 function selectYearHandler(event) {
   const selectedYear = Number(event.target.value);
   Engine.state.currentDate.year = selectedYear;
-  populateYearSelect();
   displayCalendar(Engine.state.currentDate);
 }
 
@@ -135,8 +134,8 @@ function populateMonthSelect() {
 function populateYearSelect() {
   const selectElm = document.getElementById("select-year");
   selectElm.textContent = "";
-  const currentYear = Engine.state.currentDate.year;
-  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+  
+  for (let y = 1900; y <= 2050; y++) {
     const option = document.createElement("option");
     option.textContent = `${y}`;
     option.value = String(y);

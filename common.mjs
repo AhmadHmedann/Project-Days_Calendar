@@ -79,7 +79,21 @@ function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
   const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); //first day in the month
   const offset = (weekday - firstWeekday + 7) % 7; //How many days I need to move to reach the first weekday
   const day = 1 + offset + (nth - 1) * 7;
-  return { year, month, day }; //Look at the example below
+
+  //creating a date object to test oour caluculation
+  const resultDate = new Date(Date.UTC(year, month - 1, day));
+  //validation to check if our month aligns with holiday
+  if (resultDate.getUTCMonth() === month -1){
+    return{
+      year: resultDate.getUTCFullYear(),
+      month: resultDate.getUTCMonth() + 1,
+      day: resultDate.getUTCDate()
+    };//demo idea
+
+  } else {
+    return null
+  }//this allows us to handle invalid occurances. 
+ 
 }
 
 //same previous function but here when the say the last Friday by example
@@ -88,16 +102,15 @@ function lastWeekdayOfMonthUTC(year, month, weekday) {
   const lastWeekday = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay(); // what day of the week is the last day of month (0-6)
   const back = (lastWeekday - weekday + 7) % 7; // how many days we must go back from the last day to reach target weekday
   const day = lastDay - back;
-  return { year, month, day };
+
+  const resultDate = new Date(Date.UTC(year, month -1, day));
+  
+  return { year: resultDate.getUTCFullYear(),
+           month: resultDate.getUTCMonth() + 1,
+           day: resultDate.getUTCDate()
+  };
 }
 
-// {
-//         "name": "Ada Lovelace Day",
-//         "monthName": "October",
-//         "dayName": "Tuesday",
-//         "occurrence": "second",
-//         "descriptionURL": "https://codeyourfuture.github.io/The-Piscine/days/ada.txt"
-//     }
 
 // our day is Tuesday that mean weekday is 2
 // let's take the October 2026 as example
@@ -143,12 +156,13 @@ export function buildEventsByDateMap(commemorativeDays, year) {
       dataObj = lastWeekdayOfMonthUTC(year, month, weekday);
     } else {
       const nth = occurrenceToNth[day.occurrence];
-      if (!nth) return; // or throw error
+      if (!nth) continue; // or throw error
       dataObj = nthWeekdayOfMonthUTC(year, month, weekday, nth);
+      if (!dataObj) continue;
     }
 
     const key = `${dataObj.year}/${pad2(dataObj.month)}/${pad2(dataObj.day)}`;
-    console.log(key);
+    //console.log(key);
     if (!map.has(key)) map.set(key, []);
     map.get(key).push({
       name: day.name,
