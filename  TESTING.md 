@@ -12,7 +12,7 @@ how i did i test this: When open live server It shows you february 2026 which is
 
 HOW DID I TEST THIS: 
 
-I used the month-year selectors to go to October 2024, and I visually inspected that our rendered days align with the relevant month, like October 1st aligning with Tuesday, etc . 
+I used the month selector and year input to go to October 2024, and I visually inspected that our rendered days align with the relevant month, like October 1st aligning with Tuesday, etc . 
 I confirmed that Monday and Sunday are empty as they are only labeled in September . 
 I also checked that our build events function and confirmed that our build events function successfully mapped the holiday to the specific days which were.
 October 8 and 25 and correctly upended them to the relevant cells.
@@ -53,17 +53,13 @@ I also used the dev tool to confirm that no extra ghost rows beyond the required
   * If there are end-points to the month+year selector, the previous and next buttons must work flawlessly when going beyond that limit. The UI must not e.g. show an empty string, "undefined", "null", "NaN" or similar if the "current month" or "current year" is displayed anywhere in the UI. The calendar days must be correctly shown.
 
 HOW DID I TEST THIS:
-I added validation and set boundaries to have a start point and an end point.
- I navigated to the December 2050 end year and clicked the "Next Month" button; 
- the validation message popped up as expected. 
- Our event handler function uses a return statement to exit early and ensure the state remains at 2050.
-  After triggering the error message, I verified that no labels turned to undefined or null and the state remained stable at 2050.
+ I navigated to the December 2050 end year and clicked the "Next Month" button and make sure it works.
 
  *A usable way of jumping to a month+year.
   
 HOW DID I TEST THIS:  
-I tested the dropdown selectors and selected random combinations to ensure the calendar jumped immediately to the correct view.
-I verified that the dropdowns were restricted from 1900 to 2050.
+I tested the dropdown month selector and year input and selected random combinations to ensure the calendar jumped immediately to the correct view.
+
 I also ensured that when I jump to a year, our state reflects the jump and our displayCalendar function is triggered to render the grid accordingly.
 
 * The website must score 100 for accessibility in Lighthouse

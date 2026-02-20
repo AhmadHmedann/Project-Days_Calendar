@@ -1,9 +1,7 @@
-
 import daysData from "./days.json" with { type: "json" };
-// import the JSOn file so the Engine can calculate the holidays/ CM days
 
 export const state = {
-  commemorativeDays:daysData,
+  commemorativeDays: daysData,
   currentDate: {
     year: new Date().getUTCFullYear(),
     month: new Date().getUTCMonth() + 1,
@@ -61,8 +59,6 @@ const occurrenceToNth = {
   fifth: 5,
 };
 
-
-
 // 2. Math Functions (Exported so the Bridge and Tests can see them)
 export function numberOfDaysInMonth({ year, month }) {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();
@@ -74,38 +70,35 @@ export function dayOfWeekOrder({ year, month }) {
 
 //calculate the date
 function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
-  const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); //first day in the month
-  const offset = (weekday - firstWeekday + 7) % 7; //How many days I need to move to reach the first weekday
+  const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+  const offset = (weekday - firstWeekday + 7) % 7;
   const day = 1 + offset + (nth - 1) * 7;
 
-  //creating a date object to test oour caluculation
   const resultDate = new Date(Date.UTC(year, month - 1, day));
-  //validation to check if our month aligns with holiday
-  if (resultDate.getUTCMonth() === month -1){
-    return{
+
+  if (resultDate.getUTCMonth() === month - 1) {
+    return {
       year: resultDate.getUTCFullYear(),
       month: resultDate.getUTCMonth() + 1,
-      day: resultDate.getUTCDate()
-    };//demo idea
-
+      day: resultDate.getUTCDate(),
+    };
   } else {
-    return null
-  }//this allows us to handle invalid occurances. 
- 
+    return null;
+  }
 }
 
-//same previous function but here when the say the last Friday by example
 function lastWeekdayOfMonthUTC(year, month, weekday) {
   const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  const lastWeekday = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay(); // what day of the week is the last day of month (0-6)
-  const back = (lastWeekday - weekday + 7) % 7; // how many days we must go back from the last day to reach target weekday
+  const lastWeekday = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay();
+  const back = (lastWeekday - weekday + 7) % 7;
   const day = lastDay - back;
 
-  const resultDate = new Date(Date.UTC(year, month -1, day));
-  
-  return { year: resultDate.getUTCFullYear(),
-           month: resultDate.getUTCMonth() + 1,
-           day: resultDate.getUTCDate()
+  const resultDate = new Date(Date.UTC(year, month - 1, day));
+
+  return {
+    year: resultDate.getUTCFullYear(),
+    month: resultDate.getUTCMonth() + 1,
+    day: resultDate.getUTCDate(),
   };
 }
 
@@ -150,7 +143,7 @@ export function buildEventsByDateMap(commemorativeDays, year) {
     }
 
     const key = `${dataObj.year}/${pad2(dataObj.month)}/${pad2(dataObj.day)}`;
-    //console.log(key);
+
     if (!map.has(key)) map.set(key, []);
     map.get(key).push({
       name: day.name,
@@ -158,4 +151,3 @@ export function buildEventsByDateMap(commemorativeDays, year) {
   }
   return map;
 }
- 

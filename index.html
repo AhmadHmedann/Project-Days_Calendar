@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
     <script type="module" src="web.mjs"></script>
 
     <link rel="stylesheet" href="style.css" />
@@ -16,14 +16,14 @@
       <label for="select-month">Select Month:</label>
       <select id="select-month" name="select-month"></select>
 
-      <label for="select-year">Select Year:</label>
-      <select id="select-year" name="select-year"></select>
+      <label for="input-year">Select Year: </label>
+      <input type="number" id="input-year" min="0" />
     </section>
 
     <main aria-labelledby="calendar-title">
-        <header id="month-states">
-           <h2 id="month-label"></h2>
-        </header>
+      <header id="month-states">
+        <h2 id="month-label"></h2>
+      </header>
       <div
         class="calendar"
         id="calendar"
