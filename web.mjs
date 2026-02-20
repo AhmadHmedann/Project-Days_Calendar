@@ -7,7 +7,8 @@ import * as Engine from "./common.mjs";
 
 // This waits for the browser to be ready before drawing anything.
 window.onload = function () {
-  document.getElementById("next-month")
+  document
+    .getElementById("next-month")
     .addEventListener("click", nextMonthHandler);
   document
     .getElementById("previous-month")
@@ -27,21 +28,20 @@ window.onload = function () {
 };
 
 function displayCalendar(currentDate) {
-  renderCalendarGrid(currentDate);
-}
 
-function renderCalendarGrid(currentDate) {
-   const eventByDate = Engine.buildEventsByDateMap(
-     Engine.state.commemorativeDays,
-     currentDate.year,
-   );
-   console.log(currentDate.commemorativeDays);
+  ensureYearOptionsCover(currentDate.year);
+  
+  const eventByDate = Engine.buildEventsByDateMap(
+    Engine.state.commemorativeDays,
+    currentDate.year,
+  );
   //asking the engine for data
   const monthDays = Engine.numberOfDaysInMonth(currentDate);
   const firstWeekday = Engine.dayOfWeekOrder(currentDate);
 
   //update the Labels and Selects tags
-  document.getElementById("month-label").textContent = `${Engine.monthName(currentDate.month)} ${currentDate.year}`;
+  document.getElementById("month-label").textContent =
+    `${Engine.monthName(currentDate.month)} ${currentDate.year}`;
   document.getElementById("select-month").value = String(currentDate.month);
   document.getElementById("select-year").value = String(currentDate.year);
 
@@ -78,7 +78,7 @@ function renderCalendarGrid(currentDate) {
       }
       row.append(cell);
       const key = cell.dataset.date;
-     const events = eventByDate.get(key);
+      const events = eventByDate.get(key);
       if (events) {
         for (const ev of events) {
           const btn = document.createElement("button");
@@ -87,7 +87,7 @@ function renderCalendarGrid(currentDate) {
           btn.type = "button";
           cell.append(btn);
         }
-      }   
+      }
     }
     root.append(row);
   }
@@ -98,13 +98,13 @@ function nextMonthHandler() {
   displayCalendar(Engine.state.currentDate);
 }
 
-function previousMonthHandler(){
+function previousMonthHandler() {
   Engine.decrementMonth();
 
   displayCalendar(Engine.state.currentDate);
 }
 
-function selectMonthHandler(event){
+function selectMonthHandler(event) {
   const selectedMonth = Number(event.target.value);
   Engine.state.currentDate.month = selectedMonth;
   displayCalendar(Engine.state.currentDate);
@@ -116,7 +116,7 @@ function selectYearHandler(event) {
   displayCalendar(Engine.state.currentDate);
 }
 
-//UI helpers 
+//UI helpers
 
 function populateMonthSelect() {
   const selectElm = document.getElementById("select-month");
@@ -130,15 +130,26 @@ function populateMonthSelect() {
   }
 }
 
-
 function populateYearSelect() {
   const selectElm = document.getElementById("select-year");
   selectElm.textContent = "";
-  
-  for (let y = 1900; y <= 2050; y++) {
+
+  const currentYear = Engine.state.currentDate.year;
+  for (let y = currentYear - 25; y <= currentYear + 25; y++) {
     const option = document.createElement("option");
     option.textContent = `${y}`;
     option.value = String(y);
     selectElm.append(option);
+  }
+}
+function ensureYearOptionsCover(year) {
+  const select = document.getElementById("select-year");
+  if (select.options.length === 0) return populateYearSelect();
+
+  const first = Number(select.options[0].value);
+  const last = Number(select.options[select.options.length - 1].value);
+
+  if (year < first || year > last) {
+    populateYearSelect(); // rebuild around new currentYear when needed
   }
 }

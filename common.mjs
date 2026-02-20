@@ -76,8 +76,8 @@ export function dayOfWeekOrder({ year, month }) {
 
 //calculate the date
 function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
-  const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); //first day in the month
-  const offset = (weekday - firstWeekday + 7) % 7; //How many days I need to move to reach the first weekday
+  const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); 
+  const offset = (weekday - firstWeekday + 7) % 7; 
   const day = 1 + offset + (nth - 1) * 7;
 
   //creating a date object to test oour caluculation
@@ -88,7 +88,7 @@ function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
       year: resultDate.getUTCFullYear(),
       month: resultDate.getUTCMonth() + 1,
       day: resultDate.getUTCDate()
-    };//demo idea
+    };
 
   } else {
     return null
@@ -96,11 +96,11 @@ function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
  
 }
 
-//same previous function but here when the say the last Friday by example
+
 function lastWeekdayOfMonthUTC(year, month, weekday) {
   const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  const lastWeekday = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay(); // what day of the week is the last day of month (0-6)
-  const back = (lastWeekday - weekday + 7) % 7; // how many days we must go back from the last day to reach target weekday
+  const lastWeekday = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay();
+  const back = (lastWeekday - weekday + 7) % 7;
   const day = lastDay - back;
 
   const resultDate = new Date(Date.UTC(year, month -1, day));
@@ -110,16 +110,6 @@ function lastWeekdayOfMonthUTC(year, month, weekday) {
            day: resultDate.getUTCDate()
   };
 }
-
-
-// our day is Tuesday that mean weekday is 2
-// let's take the October 2026 as example
-// fist day is Thursday
-// fistday =4 ;
-//offset  = (2-4+7)%7 = 5 that mean I need 5 day to reach first Tuesday
-// day = 1+offset + (7 because is the second Tuesday)
-
-// the return will be (year:2026, month:10, day:13,)  13/10/2026
 
 // 3. Navigation Logic (Purely updating data)
 export function incrementMonth() {
@@ -162,7 +152,7 @@ export function buildEventsByDateMap(commemorativeDays, year) {
     }
 
     const key = `${dataObj.year}/${pad2(dataObj.month)}/${pad2(dataObj.day)}`;
-    //console.log(key);
+  
     if (!map.has(key)) map.set(key, []);
     map.get(key).push({
       name: day.name,
