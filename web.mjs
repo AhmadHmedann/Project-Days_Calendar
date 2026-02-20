@@ -73,7 +73,7 @@ function renderCalendarGrid(currentDate) {
         cell.classList.add("empty-day");
       } else {
         cell.textContent = dayCounter;
-        cell.dataset.date = `${currentDate.year}/${currentDate.month}/${dayCounter}`;
+        cell.dataset.date = `${currentDate.year}/${Engine.pad2(currentDate.month)}/${Engine.pad2(dayCounter)}`;
         dayCounter++;
       }
       row.append(cell);
