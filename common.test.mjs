@@ -17,15 +17,12 @@ test("Math: February 2024 should have 29 days (Leap Year)", () => {
 });
 
 test("State: incrementMonth should wrap from December to January", () => {
-  //1.ARRANGE our data
+  
   state.currentDate.year = 2026;
   state.currentDate.month = 12;
 
-
-  //2.ACT 
   incrementMonth()
 
-  3.//ASSERT
   assert.strictEqual( state.currentDate.month, 1, "Should wrap to January");
   assert.strictEqual( state.currentDate.year, 2027, "Should increment the year");
 
