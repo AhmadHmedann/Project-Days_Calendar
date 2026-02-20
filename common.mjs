@@ -1,5 +1,3 @@
-// This is a placeholder file which shows how you can define functions which can be used from both a browser script and a node script. You can delete the contents of the file once you have understood how it works.
-// 1. State - The Single Source of Truth
 
 import daysData from "./days.json" with { type: "json" };
 // import the JSOn file so the Engine can calculate the holidays/ CM days
@@ -111,16 +109,6 @@ function lastWeekdayOfMonthUTC(year, month, weekday) {
   };
 }
 
-
-// our day is Tuesday that mean weekday is 2
-// let's take the October 2026 as example
-// fist day is Thursday
-// fistday =4 ;
-//offset  = (2-4+7)%7 = 5 that mean I need 5 day to reach first Tuesday
-// day = 1+offset + (7 because is the second Tuesday)
-
-// the return will be (year:2026, month:10, day:13,)  13/10/2026
-
 // 3. Navigation Logic (Purely updating data)
 export function incrementMonth() {
   if (state.currentDate.month === 12) {
@@ -170,3 +158,4 @@ export function buildEventsByDateMap(commemorativeDays, year) {
   }
   return map;
 }
+ 

@@ -94,13 +94,24 @@ function renderCalendarGrid(currentDate) {
 }
 
 function nextMonthHandler() {
+  if(Engine.state.currentDate.year === 2050 && Engine.state.currentDate.month === 12){
+
+  alert("Error: You can not go Beyond (December 2050 ).");
+  return; 
+}
+
   Engine.incrementMonth();
   displayCalendar(Engine.state.currentDate);
 }
 
 function previousMonthHandler(){
-  Engine.decrementMonth();
+  if(Engine.state.currentDate.year === 1900 && Engine.state.currentDate.month === 1){
 
+  alert("Error: You can not go before (January 1900 ).");
+  return; 
+}
+
+  Engine.decrementMonth();
   displayCalendar(Engine.state.currentDate);
 }
 
