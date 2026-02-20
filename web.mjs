@@ -31,6 +31,11 @@ function displayCalendar(currentDate) {
 }
 
 function renderCalendarGrid(currentDate) {
+   const eventByDate = Engine.buildEventsByDateMap(
+     Engine.state.commemorativeDays,
+     currentDate.year,
+   );
+   console.log(currentDate.commemorativeDays);
   //asking the engine for data
   const monthDays = Engine.numberOfDaysInMonth(currentDate);
   const firstWeekday = Engine.dayOfWeekOrder(currentDate);
@@ -72,6 +77,17 @@ function renderCalendarGrid(currentDate) {
         dayCounter++;
       }
       row.append(cell);
+      const key = cell.dataset.date;
+     const events = eventByDate.get(key);
+      if (events) {
+        for (const ev of events) {
+          const btn = document.createElement("button");
+          btn.className = "event-btn";
+          btn.textContent = ev.name;
+          btn.type = "button";
+          cell.append(btn);
+        }
+      }   
     }
     root.append(row);
   }
@@ -127,4 +143,3 @@ function populateYearSelect() {
     selectElm.append(option);
   }
 }
-

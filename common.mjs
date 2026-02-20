@@ -5,6 +5,7 @@ import daysData from "./days.json" with { type: "json" };
 // import the JSOn file so the Engine can calculate the holidays/ CM days
 
 export const state = {
+  commemorativeDays:daysData,
   currentDate: {
     year: new Date().getUTCFullYear(),
     month: new Date().getUTCMonth() + 1,
@@ -28,34 +29,6 @@ export function monthName(monthNumber) {
     "December",
   ];
   return months[monthNumber - 1];
-}
-
-// 2. Math Functions (Exported so the Bridge and Tests can see them)
-export function numberOfDaysInMonth({ year, month }) {
-  return new Date(Date.UTC(year, month, 0)).getUTCDate();
-}
-
-export function dayOfWeekOrder({ year, month }) {
-  return new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
-}
-
-// 3. Navigation Logic (Purely updating data)
-export function incrementMonth() {
-  if (state.currentDate.month === 12) {
-    state.currentDate.month = 1;
-    state.currentDate.year++;
-  } else {
-    state.currentDate.month++;
-  }
-}
-
-export function decrementMonth() {
-  if (state.currentDate.month === 1) {
-    state.currentDate.month = 12;
-    state.currentDate.year--;
-  } else {
-    state.currentDate.month--;
-  }
 }
 
 const monthToNumber = {
@@ -90,10 +63,21 @@ const occurrenceToNth = {
   fifth: 5,
 };
 
+
+
+// 2. Math Functions (Exported so the Bridge and Tests can see them)
+export function numberOfDaysInMonth({ year, month }) {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+export function dayOfWeekOrder({ year, month }) {
+  return new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+}
+
 //calculate the date
 function nthWeekdayOfMonthUTC(year, month, weekday, nth) {
-  const firstDay = new Date(Date.UTC(year, month, 0)).getUTCDate(); //first day in the month
-  const offset = (weekday - firstDay + 7) % 7; //How many days I need to move to reach the first weekday
+  const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); //first day in the month
+  const offset = (weekday - firstWeekday + 7) % 7; //How many days I need to move to reach the first weekday
   const day = 1 + offset + (nth - 1) * 7;
   return { year, month, day }; //Look at the example below
 }
@@ -124,30 +108,48 @@ function lastWeekdayOfMonthUTC(year, month, weekday) {
 
 // the return will be (year:2026, month:10, day:13,)  13/10/2026
 
-function pad2(num) {
-  return String(num).padStart(2, "0");
+// 3. Navigation Logic (Purely updating data)
+export function incrementMonth() {
+  if (state.currentDate.month === 12) {
+    state.currentDate.month = 1;
+    state.currentDate.year++;
+  } else {
+    state.currentDate.month++;
+  }
 }
 
-function buildEventsByDateMap(commemorativeDays, year) {
+export function decrementMonth() {
+  if (state.currentDate.month === 1) {
+    state.currentDate.month = 12;
+    state.currentDate.year--;
+  } else {
+    state.currentDate.month--;
+  }
+}
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+export function buildEventsByDateMap(commemorativeDays, year) {
   const map = new Map();
 
   for (const day of commemorativeDays) {
     const month = monthToNumber[day.monthName];
+
     const weekday = dayToNumber[day.dayName];
-    console.log(weekday);
 
     let dataObj;
     if (day.occurrence === "last") {
-      dateObject = lastWeekdayOfMonthUTC(year, month, weekday);
+      dataObj = lastWeekdayOfMonthUTC(year, month, weekday);
     } else {
       const nth = occurrenceToNth[day.occurrence];
       if (!nth) return; // or throw error
-      dataObj = nthWeekdayOfMonthUTC(year, month, weekday);
+      dataObj = nthWeekdayOfMonthUTC(year, month, weekday, nth);
     }
 
     const key = `${dataObj.year}/${pad2(dataObj.month)}/${pad2(dataObj.day)}`;
-
-    if(!map.has(key)) map.set(key,[]);
+    console.log(key);
+    if (!map.has(key)) map.set(key, []);
     map.get(key).push({
       name: day.name,
     });
